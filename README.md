@@ -1,3 +1,9 @@
+[React.jsアプリケーションをコンテナ化](https://docs.docker.com/guides/reactjs/containerize/)
+
+のサンプルコードで学習するためのリポジトリです。
+
+以下は元のサンプルに書かれていた内容です。
+
 # 🐳 Docker React.js Sample Project
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
