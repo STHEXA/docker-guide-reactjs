@@ -4,21 +4,24 @@ import App from "./App";
 describe("App Component", () => {
   it("renders without crashing", () => {
     render(<App />);
-    expect(screen.getByText(/React.js \+ Docker/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Hello from Docker Compose Watch/i),
+    ).toBeInTheDocument();
+    // expect(screen.getByText("🐳")).toBeInTheDocument();
   });
 
   it("renders all major sections", () => {
     render(<App />);
-    
+
     // Hero section
     expect(screen.getByText(/Sample Project/i)).toBeInTheDocument();
-    
+
     // Features section
     expect(screen.getByText(/Why This Sample\?/i)).toBeInTheDocument();
-    
+
     // Quick Start section
     expect(screen.getByText(/Quick Start/i)).toBeInTheDocument();
-    
+
     // Footer section
     expect(screen.getByText(/Created by/i)).toBeInTheDocument();
   });
@@ -29,4 +32,3 @@ describe("App Component", () => {
     expect(mainDiv).toBeInTheDocument();
   });
 });
-

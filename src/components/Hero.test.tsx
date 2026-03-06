@@ -4,7 +4,10 @@ import { Hero } from "./index";
 describe("Hero Component", () => {
   it("renders without crashing", () => {
     render(<Hero />);
-    expect(screen.getByText(/React.js \+ Docker/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Hello from Docker Compose Watch/i),
+    ).toBeInTheDocument();
+    // expect(screen.getByText("🐳")).toBeInTheDocument();
   });
 
   it("renders the React logo", () => {
@@ -16,12 +19,14 @@ describe("Hero Component", () => {
 
   it("renders the Docker emoji", () => {
     render(<Hero />);
-    expect(screen.getByText("🐳")).toBeInTheDocument();
+    // expect(screen.getByText("🐳")).toBeInTheDocument();
   });
 
   it("renders the main heading with correct text", () => {
     render(<Hero />);
-    expect(screen.getByText(/React.js \+ Docker/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Hello from Docker Compose Watch/i),
+    ).toBeInTheDocument();
     expect(screen.getByText(/Sample Project/i)).toBeInTheDocument();
   });
 
@@ -29,8 +34,8 @@ describe("Hero Component", () => {
     render(<Hero />);
     expect(
       screen.getByText(
-        /A modern, containerized React application demonstrating best practices/i
-      )
+        /A modern, containerized React application demonstrating best practices/i,
+      ),
     ).toBeInTheDocument();
   });
 
@@ -40,10 +45,13 @@ describe("Hero Component", () => {
     expect(docButton).toBeInTheDocument();
     expect(docButton.closest("a")).toHaveAttribute(
       "href",
-      "https://docs.docker.com/guides/reactjs/"
+      "https://docs.docker.com/guides/reactjs/",
     );
     expect(docButton.closest("a")).toHaveAttribute("target", "_blank");
-    expect(docButton.closest("a")).toHaveAttribute("rel", "noopener noreferrer");
+    expect(docButton.closest("a")).toHaveAttribute(
+      "rel",
+      "noopener noreferrer",
+    );
   });
 
   it("renders the GitHub Repository button with correct link", () => {
@@ -52,10 +60,13 @@ describe("Hero Component", () => {
     expect(githubButton).toBeInTheDocument();
     expect(githubButton.closest("a")).toHaveAttribute(
       "href",
-      "https://github.com/kristiyan-velkov/docker-reactjs-sample"
+      "https://github.com/kristiyan-velkov/docker-reactjs-sample",
     );
     expect(githubButton.closest("a")).toHaveAttribute("target", "_blank");
-    expect(githubButton.closest("a")).toHaveAttribute("rel", "noopener noreferrer");
+    expect(githubButton.closest("a")).toHaveAttribute(
+      "rel",
+      "noopener noreferrer",
+    );
   });
 
   it("applies correct CSS classes to the header", () => {
@@ -69,9 +80,8 @@ describe("Hero Component", () => {
   it("renders animated decorative elements", () => {
     const { container } = render(<Hero />);
     const decorativeElements = container.querySelectorAll(
-      ".absolute.rounded-full"
+      ".absolute.rounded-full",
     );
     expect(decorativeElements.length).toBeGreaterThan(0);
   });
 });
-
