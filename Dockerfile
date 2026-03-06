@@ -1,44 +1,44 @@
 # =========================================
-# ステージ 1: React.js アプリケーションのビルド
+# Stage 1: Build the React.js Application
 # =========================================
 
-# ビルド用の軽量 Node.js イメージを使用（ARG でカスタマイズ可能）
-FROM dhi.io/node:25-debian13-sfw-ent-dev AS builder
+# Use a lightweight Node.js image for building (customizable via ARG)
+FROM dhi.io/node:24-alpine3.22-dev AS builder
 
-# コンテナ内の作業ディレクトリを設定
+# Set the working directory inside the container
 WORKDIR /app
 
-# Docker のキャッシング機構を活用するため、最初にパッケージ関連ファイルをコピー
+# Copy package-related files first to leverage Docker's caching mechanism
 COPY package.json package-lock.json* ./
 
-# プロジェクト依存関係をインストール（npm ci を使用して再現可能なインストールを保証）
+# Install project dependencies using npm ci (ensures a clean, reproducible install)
 RUN --mount=type=cache,target=/root/.npm npm ci
 
-# アプリケーション ソースコードの残りをコンテナにコピー
+# Copy the rest of the application source code into the container
 COPY . .
 
-# React.js アプリケーションをビルド（/app/dist に出力）
+# Build the React.js application (outputs to /app/dist)
 RUN npm run build
 
 # =========================================
-# ステージ 2: 静的ファイルを提供するための Nginx を準備
+# Stage 2: Prepare Nginx to Serve Static Files
 # =========================================
 
-FROM docker pull dhi.io/nginx:1-debian13-dev AS runner
+FROM dhi.io/nginx:1.28.0-alpine3.21-dev AS runner
 
-# カスタム Nginx 設定をコピー
+# Copy custom Nginx config
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# ビルド ステージから静的ビルド出力を、Nginx のデフォルト HTML サービス ディレクトリにコピー
+# Copy the static build output from the build stage to Nginx's default HTML serving directory
 COPY --chown=nginx:nginx --from=builder /app/dist /usr/share/nginx/html
 
-# セキュリティ ベストプラクティスのため、非ルート ユーザーを使用
+# Use a non-root user for security best practices
 USER nginx
 
-# HTTP トラフィックを許可するためにポート 8080 を公開
-# 注：デフォルト NGINX コンテナはポート 80 ではなくポート 8080 でリッスン 
+# Expose port 8080 to allow HTTP traffic
+# Note: The default NGINX container now listens on port 8080 instead of 80 
 EXPOSE 8080
 
-# カスタム設定で Nginx を直接起動
+# Start Nginx directly with custom config
 ENTRYPOINT ["nginx", "-c", "/etc/nginx/nginx.conf"]
 CMD ["-g", "daemon off;"]
