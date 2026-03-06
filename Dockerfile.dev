@@ -1,0 +1,25 @@
+# =========================================
+# ステージ 1: React.js アプリケーション開発
+# =========================================
+ARG NODE_VERSION=24.12.0-alpine
+
+# 開発用の軽量な Node.js イメージを使用
+FROM node:${NODE_VERSION} AS dev
+
+# コンテナ内の作業ディレクトリを設定
+WORKDIR /app
+
+# Docker のキャッシュ機構を活用するため、最初にパッケージ関連ファイルをコピー
+COPY package.json package-lock.json* ./
+
+# プロジェクトの依存関係をインストール
+RUN --mount=type=cache,target=/root/.npm npm install
+
+# アプリケーションの残りのソースコードをコンテナにコピー
+COPY . .
+
+# Vite 開発サーバーが使用するポートを公開
+EXPOSE 5173
+
+# デフォルトコマンドを使用、Docker compose.yml ファイルでオーバーライド可能
+CMD ["npm", "run", "dev"]
